@@ -149,3 +149,19 @@ def edit(request, id):
         })
     else:
         return HttpResponse("Sorry, you can't edit others' posts")
+
+
+def like(request, id):
+    user = User.objects.get(username=request.user)
+    post = Post.objects.get(pk=id)
+    post_likes = post.likes.all()
+    
+    liker_list = list()
+    for likes in post_likes:
+        liker_list.append(likes.user.username)
+
+    if str(request.user) in liker_list:
+        Like.objects.filter(user=user, post=post).delete()
+    else:
+        Like.objects.create(user=user, post=post, like=1)
+    return HttpResponseRedirect(reverse("index"))
