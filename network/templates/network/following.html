@@ -6,10 +6,10 @@
 {% block body %}
     {% if user.is_authenticated %}
 
-        <ul>
-            {% for post in posts %}
+
+       
         <div class="post-main">
-            {% for i in post %}
+            {% for i in posts %}
                 <div class="post-container">
                     <div class="title-post">
                         <div class="title">{{ i.user|title }}</div>
@@ -36,13 +36,23 @@
             {% endfor %}
         </div>                
 
-                {% empty %}
-                    <li>Sorry, no posts yet.</li>
-                
-            {% endfor %}
-        </ul>
-
-
+        <nav class="page-nav" aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if posts.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">previous</a></li>
+                {% endif %}
+        
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="?page={{ posts.number }}">{{ posts.number }} <span class="sr-only">(current)</span></a>
+                    </li>
+        
+                {% if posts.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">last &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
 
     {% else %}
         <p class="text-center font-weight-bold">You must sign in first</p>

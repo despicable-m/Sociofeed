@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
+from django.core.paginator import Paginator
 
 from .models import User, Post, Follow, Like
 
@@ -20,7 +21,11 @@ def index(request):
         Post.objects.create(user=user, post=post, date=d, time=t)
 
     post = Post.objects.all()
-    post = reversed(post)
+    # post = reversed(post)
+
+    paginator = Paginator(post, 10)
+    page_number = request.GET.get('page')
+    post = paginator.get_page(page_number)
     return render(request, "network/index.html", {
         "post":post
     })
@@ -82,7 +87,11 @@ def profile(request):
     user = User.objects.get(username=request.user)
     users = User.objects.exclude(username=request.user)
     posts = Post.objects.filter(user=user)
-    posts = reversed(posts)
+    # posts = reversed(posts)
+
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
 
     return render(request, "network/profile.html", {
         "user":user,
@@ -118,11 +127,14 @@ def following(request):
     
     posts = list()
     for i in users:
-        posts.append(Post.objects.filter(user=i))
+        p = Post.objects.filter(user=i)
 
-        for post in posts:
-            for p in post:
-                print(p.post)
+        for post in p:
+            posts.append(post)
+
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
     return render(request, "network/following.html", {
         "posts":posts
     })
