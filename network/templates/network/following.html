@@ -1,0 +1,26 @@
+{% extends "network/layout.html" %}
+{% block title %}
+    Home
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+
+        <ul>
+            {% for post in posts %}
+                {% for i in post %}
+                    <li>
+                        {{ i.user|title }} said {{ i.post}} on {{ i.date }} at {{ i.time }} and has {{ i.likes.count }} likes
+                    </li>
+                {% empty %}
+                    <li>Sorry, no posts yet.</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        <p class="text-center font-weight-bold">You must sign in first</p>
+    {% endif %}
+
+
+{% endblock %}

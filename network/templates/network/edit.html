@@ -1,0 +1,19 @@
+{% extends "network/layout.html" %}
+{% block title %}
+    Home
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <form class="form-group" action="/edit/{{ p.id }}" method="POST">
+            {% csrf_token %}
+            <textarea class="form-control" id="compose-area" name="post">{{ p.post }}</textarea>
+            <button class="btn btn-primary">Save</button>
+        </form>
+
+    {% else %}
+        <p class="text-center font-weight-bold">You must sign in first</p>
+    {% endif %}
+
+
+{% endblock %}

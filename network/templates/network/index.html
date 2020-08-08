@@ -1,5 +1,32 @@
 {% extends "network/layout.html" %}
+{% block title %}
+    Home
+{% endblock %}
 
 {% block body %}
-    TODO
+    {% if user.is_authenticated %}
+        <form class="form-group" action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+            <textarea class="form-control" id="compose-area" name="post"></textarea>
+            <button class="btn btn-primary">Post</button>
+        </form>
+
+        <ul>
+            {% for i in post %}
+                <li>
+                    {{ i.user|title }} said {{ i.post}} on {{ i.date }} at {{ i.time }} and has {{ i.likes.count }} likes
+                    {% if i.user == request.user %}
+                        <a href="edit/{{ i.id }}">Edit</a>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Sorry, no posts yet.</li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        <p class="text-center font-weight-bold">You must sign in first</p>
+    {% endif %}
+
+
 {% endblock %}

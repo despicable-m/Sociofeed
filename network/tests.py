@@ -65,5 +65,18 @@ class ModelsTestCase(TestCase):
 
     def test_like(self):
         p = Post.objects.get(pk=1)
-        print(p.likes.all())
         self.assertEqual(p.likes.count(), 2)
+
+    def test_invalid_like(self):
+        u = User.objects.get(username="Becky")
+        p = Post.objects.get(pk=1)
+        l = Like.objects.create(user=u, post=p, like=2)
+
+        self.assertFalse(l.is_valid_like())
+
+    def test_valid_like(self):
+        u = User.objects.get(username="Becky")
+        p = Post.objects.get(pk=1)
+        l = Like.objects.create(user=u, post=p, like=1)
+
+        self.assertTrue(l.is_valid_like())

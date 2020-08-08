@@ -1,0 +1,36 @@
+{% extends "network/layout.html" %}
+{% block title %}
+    {{request.user}}
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <h3>followers: {{ user.followers.count }}</h3>
+    <h3>following: {{ user.following.count }}</h3>
+
+    <ul>
+        {% for i in posts %}
+            <li>
+                {{ i.user|title }} said {{ i.post}} on {{ i.date }} at {{ i.time }} and has {{ i.likes.count }} likes
+                {% if i.user == request.user %}
+                    <a href="edit/{{ i.id }}">Edit</a>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Sorry, no posts yet.</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for u in users %}
+            <li> 
+                {{ u.username|title }}
+                <button class="btn btn-success" onclick="window.location.href='/follow/{{ u.id }}'">Follow</button>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p class="text-center font-weight-bold">You must sign in first</p>
+    {% endif %}
+
+{% endblock %}
