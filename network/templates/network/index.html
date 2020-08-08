@@ -15,8 +15,9 @@
             {% for i in post %}
                 <li>
                     {{ i.user|title }} said {{ i.post}} on {{ i.date }} at {{ i.time }} and has {{ i.likes.count }} likes
+                    <a href="like/{{ i.id }}">Like </a>
                     {% if i.user == request.user %}
-                        <a href="edit/{{ i.id }}">Edit</a>
+                        <a href="edit/{{ i.id }}"> Edit</a>
                     {% endif %}
                 </li>
             {% empty %}

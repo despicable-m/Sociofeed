@@ -11,6 +11,7 @@
                 {% for i in post %}
                     <li>
                         {{ i.user|title }} said {{ i.post}} on {{ i.date }} at {{ i.time }} and has {{ i.likes.count }} likes
+                        <a href="like/{{ i.id }}">Like </a>
                     </li>
                 {% empty %}
                     <li>Sorry, no posts yet.</li>
