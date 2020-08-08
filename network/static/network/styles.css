@@ -1,0 +1,59 @@
+.form-group {
+  margin: 40px;
+}
+.form-group .form-control {
+  margin-bottom: 10px;
+}
+
+.post-container {
+  border: 1px solid black;
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+.post-container .title-post {
+  margin-left: 10px;
+}
+.post-container .title-post .title {
+  font-weight: bold;
+}
+.post-container .date-time {
+  margin-left: 10px;
+  display: flex;
+}
+.post-container .date-time .date {
+  margin-right: 10px;
+}
+.post-container .like {
+  margin-left: 10px;
+  display: flex;
+}
+.post-container .like .like-btn:hover {
+  fill: cyan;
+}
+.post-container .edit {
+  margin-left: 10px;
+}
+
+#f-f {
+  margin-left: 40px;
+  padding: 1px;
+}
+#f-f #followers {
+  font-weight: bold;
+}
+#f-f #following {
+  font-weight: bold;
+}
+
+#user {
+  margin-left: 40px;
+  margin-bottom: 10px;
+}
+#user button {
+  margin-left: 10px;
+}
+
+/*# sourceMappingURL=styles.css.map */

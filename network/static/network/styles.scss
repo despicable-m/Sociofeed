@@ -1,0 +1,67 @@
+.form-group {
+    margin: 40px;
+    .form-control {
+        margin-bottom: 10px;
+    }
+}
+
+
+// Posts design
+.post-container {
+    border: 1px solid black;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+
+    .title-post {
+        margin-left: 10px;
+        .title {
+            font-weight: bold;
+        }
+    }
+
+    .date-time {
+        margin-left: 10px;
+        display: flex;
+        .date {
+            margin-right: 10px;
+        }
+    }
+
+    .like {
+        margin-left: 10px;
+        display: flex;
+        .like-btn:hover {
+            fill: cyan;
+        }
+    }
+
+    .edit {
+        margin-left: 10px;
+    }
+}
+
+// Followers and following count design
+#f-f {
+    margin-left: 40px;
+    padding: 1px;
+    #followers {
+        font-weight: bold;
+    }
+    
+    #following {
+        font-weight: bold;
+    }
+}
+
+
+// Available users design
+#user {
+    margin-left: 40px;
+    margin-bottom: 10px;
+    button {
+        margin-left: 10px;
+    }
+}
