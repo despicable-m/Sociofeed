@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block body %}
+
     <form class="form-group" action="/edit/{{ p.id }}" method="POST">
         {% csrf_token %}
         <textarea class="form-control" id="compose-area" name="post">{{ p.post }}</textarea>
@@ -23,5 +24,3 @@
         </div>
     </div>
 {% endblock %}
-    <script src="{% static 'network/edit.js' %}"></script>
-{% block script}
