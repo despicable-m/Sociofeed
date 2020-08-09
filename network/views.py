@@ -1,17 +1,20 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
 from django.core.paginator import Paginator
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Post, Follow, Like
 
 dt = datetime.now()
 d = dt.date()
 t = dt.strftime("%H:%M:%S")
-
 
 def index(request):
     if request.method == "POST":
@@ -20,15 +23,18 @@ def index(request):
 
         Post.objects.create(user=user, post=post, date=d, time=t)
 
-    post = Post.objects.all()
-    # post = reversed(post)
+    if request.user.is_authenticated:
+        post = Post.objects.all().order_by('-id')
 
-    paginator = Paginator(post, 10)
-    page_number = request.GET.get('page')
-    post = paginator.get_page(page_number)
-    return render(request, "network/index.html", {
-        "post":post
-    })
+        paginator = Paginator(post, 10)
+        page_number = request.GET.get('page')
+        post = paginator.get_page(page_number)
+
+        return render(request, "network/index.html", {
+            "post":post
+        })
+    else:
+        return HttpResponseRedirect(reverse('login'))
 
 
 def login_view(request):
@@ -82,12 +88,11 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-
+@login_required
 def profile(request):
     user = User.objects.get(username=request.user)
     users = User.objects.exclude(username=request.user)
-    posts = Post.objects.filter(user=user)
-    # posts = reversed(posts)
+    posts = Post.objects.filter(user=user).order_by('-id')
 
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
@@ -99,7 +104,7 @@ def profile(request):
         "users":users
     })
 
-
+@login_required
 def follow(request, id):
     curr_user = User.objects.get(username=request.user)
     f = User.objects.get(pk=id)
@@ -116,21 +121,14 @@ def follow(request, id):
         
     return HttpResponseRedirect(reverse("profile"))
 
+
+@login_required
 def following(request):
     u = User.objects.get(username=request.user)
     p = Post.objects.all()
     f_users = u.following.all()
 
-    users = list()
-    for i in f_users:
-        users.append(i.followee)
-    
-    posts = list()
-    for i in users:
-        p = Post.objects.filter(user=i)
-
-        for post in p:
-            posts.append(post)
+    posts = Post.objects.filter(user__following__followee=u).order_by('-id')
 
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
@@ -139,7 +137,8 @@ def following(request):
         "posts":posts
     })
 
-
+@csrf_exempt
+@login_required
 def edit(request, id):
     if request.method == "POST":
         post = request.POST["post"]
@@ -163,7 +162,16 @@ def edit(request, id):
         return HttpResponse("Sorry, you can't edit others' posts")
 
 
-def like(request, id):
+@csrf_exempt
+@login_required
+def like(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+    data = json.loads(request.body)
+
+    id = data['id']
+
     user = User.objects.get(username=request.user)
     post = Post.objects.get(pk=id)
     post_likes = post.likes.all()
@@ -176,4 +184,7 @@ def like(request, id):
         Like.objects.filter(user=user, post=post).delete()
     else:
         Like.objects.create(user=user, post=post, like=1)
-    return HttpResponseRedirect(reverse("index"))
+
+    likes = post.likes.count()
+
+    return JsonResponse({"likes": likes})

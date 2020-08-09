@@ -4,16 +4,24 @@
 {% endblock %}
 
 {% block body %}
-    {% if user.is_authenticated %}
-        <form class="form-group" action="/edit/{{ p.id }}" method="POST">
-            {% csrf_token %}
-            <textarea class="form-control" id="compose-area" name="post">{{ p.post }}</textarea>
-            <button class="btn btn-primary">Save</button>
-        </form>
+    <form class="form-group" action="/edit/{{ p.id }}" method="POST">
+        {% csrf_token %}
+        <textarea class="form-control" id="compose-area" name="post">{{ p.post }}</textarea>
+        <button class="btn btn-primary">Save</button>
+    </form>
 
-    {% else %}
-        <p class="text-center font-weight-bold">You must sign in first</p>
-    {% endif %}
-
-
+    <div class="post-main">
+        <div class="post-container">
+            <div class="title-post">
+                <div class="title">{{ p.user|title }}</div>
+                <div class="post"> {{ p.post }} </div>
+            </div>
+            <div class="date-time">
+                <div class="date">{{ p.date }} </div>
+                <div class="time"> {{ p.time }} </div>
+            </div>           
+        </div>
+    </div>
 {% endblock %}
+    <script src="{% static 'network/edit.js' %}"></script>
+{% block script}

@@ -33,8 +33,11 @@
     .like {
         margin-left: 10px;
         display: flex;
+        .like-btn {
+            margin-right: 5px;
+        }
         .like-btn:hover {
-            fill: cyan;
+            fill: red;
         }
     }
 

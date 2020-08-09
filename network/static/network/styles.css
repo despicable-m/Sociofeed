@@ -30,8 +30,11 @@
   margin-left: 10px;
   display: flex;
 }
+.post-container .like .like-btn {
+  margin-right: 5px;
+}
 .post-container .like .like-btn:hover {
-  fill: cyan;
+  fill: red;
 }
 .post-container .edit {
   margin-left: 10px;
