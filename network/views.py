@@ -94,6 +94,9 @@ def profile(request):
     users = User.objects.exclude(username=request.user)
     posts = Post.objects.filter(user=user).order_by('-id')
 
+    for u in users:
+        print(u.followers.filter(follow=1))
+
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
@@ -137,11 +140,15 @@ def following(request):
         "posts":posts
     })
 
+
 @csrf_exempt
 @login_required
 def edit(request, id):
     if request.method == "POST":
-        post = request.POST["post"]
+        data = json.loads(request.body)
+        print(data)
+        the_id = data['id']
+        post = data['post']
 
         p = Post.objects.get(pk=id)
         if p.user != request.user:
@@ -150,7 +157,7 @@ def edit(request, id):
         p.post = post
         p.save()
 
-        return HttpResponseRedirect(reverse("index"))
+        return JsonResponse({"edited_post": post})
 
     p = Post.objects.get(pk=id)
     

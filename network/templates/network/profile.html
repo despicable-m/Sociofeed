@@ -13,6 +13,7 @@
     {% for u in users %}
         <div id="user"> 
             {{ u.username|title }}
+            {{ u.followers.all }}
             <button class="btn btn-success" onclick="window.location.href='/follow/{{ u.id }}'">Follow</button>
         </div>
     {% endfor %}
