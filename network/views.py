@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Post, Follow, Like
 
+
 dt = datetime.now()
 d = dt.date()
 t = dt.strftime("%H:%M:%S")
@@ -95,7 +96,12 @@ def profile(request):
     posts = Post.objects.filter(user=user).order_by('-id')
 
     for u in users:
-        print(u.followers.filter(follow=1))
+        if u.followers.filter(follow=user).exists():
+            print(f"serverside: {u.followers.filter(follow=user)}")
+            print("It's here")
+        else:
+            print(f"serverside: {u.followers.filter(follow=user)}")
+            print("it's not here")
 
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
