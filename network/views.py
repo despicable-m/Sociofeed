@@ -95,14 +95,6 @@ def profile(request):
     users = User.objects.exclude(username=request.user)
     posts = Post.objects.filter(user=user).order_by('-id')
 
-    for u in users:
-        if u.followers.filter(follow=user).exists():
-            print(f"serverside: {u.followers.filter(follow=user)}")
-            print("It's here")
-        else:
-            print(f"serverside: {u.followers.filter(follow=user)}")
-            print("it's not here")
-
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
@@ -137,7 +129,7 @@ def following(request):
     p = Post.objects.all()
     f_users = u.following.all()
 
-    posts = Post.objects.filter(user__following__followee=u).order_by('-id')
+    posts = Post.objects.filter(user__followers__follow=u).order_by('-id')
 
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
