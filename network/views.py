@@ -23,7 +23,8 @@ def index(request):
         user = request.user
 
         Post.objects.create(user=user, post=post, date=d, time=t)
-
+    
+    # Only diplay this page for signed in users
     if request.user.is_authenticated:
         post = Post.objects.all().order_by('-id')
 
@@ -115,6 +116,7 @@ def follow(request, id):
     for user in g:
         g_list.append(user.follow.username)
 
+    # Follows or unfollowers users
     if str(curr_user) in g_list:
         Follow.objects.get(follow=curr_user, followee=f).delete()
     else:
@@ -129,6 +131,7 @@ def following(request):
     p = Post.objects.all()
     f_users = u.following.all()
 
+    # Gets posts of users that user follows with the most recent first
     posts = Post.objects.filter(user__followers__follow=u).order_by('-id')
 
     paginator = Paginator(posts, 10)
@@ -148,6 +151,7 @@ def edit(request, id):
         the_id = data['id']
         post = data['post']
 
+        # Prevents users from editing other users' posts
         p = Post.objects.get(pk=id)
         if p.user != request.user:
             return HttpResponse("Sorry, you can't edit others' posts")
@@ -185,6 +189,7 @@ def like(request):
     for likes in post_likes:
         liker_list.append(likes.user.username)
 
+    # Likes and unlikes posts
     if str(request.user) in liker_list:
         Like.objects.filter(user=user, post=post).delete()
     else:

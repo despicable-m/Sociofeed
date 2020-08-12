@@ -1,7 +1,14 @@
-.form-group {
+#form-group {
   margin: 40px;
 }
-.form-group .form-control {
+#form-group .form-control {
+  margin-bottom: 10px;
+}
+
+#edit-form {
+  margin: 40px;
+}
+#edit-form .form-control {
   margin-bottom: 10px;
 }
 
@@ -32,9 +39,6 @@
 }
 .post-container .like .like-btn {
   margin-right: 5px;
-}
-.post-container .like .like-btn:hover {
-  fill: red;
 }
 .post-container .edit {
   margin-left: 10px;

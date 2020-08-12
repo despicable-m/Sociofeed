@@ -1,11 +1,12 @@
 {% extends "network/layout.html" %}
+{% load custom_template_tags %}
 {% block title %}
     Home
 {% endblock %}
 
 {% block body %}
 
-    <form class="form-group" action="{% url 'index' %}" method="POST">
+    <form id="form-group" class="form-group" action="{% url 'index' %}" method="POST">
         {% csrf_token %}
         <textarea class="form-control" id="compose-area" name="post"></textarea>
         <button class="btn btn-primary">Post</button>
@@ -23,10 +24,17 @@
                     <div class="time"> {{ i.time }} </div>
                 </div>
                 <div class="like">
-                    <a class="like-link" id="like-{{ i.id }}" data-id="{{ i.id }}" href="#">
-                        <svg class="like-btn" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="grey" xmlns="http://www.w3.org/2000/svg">
+                    <a class="like-link" id="like-{{ i.id }}" data-id="{{ i.id }}">
+                        {% post_liker request.user i as likee %}
+                        {% if likee == False %}
+                        <svg id="b-{{ i.id }}" class="like-btn" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="grey" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                         </svg>
+                        {% else %}
+                        <svg id="b-{{ i.id }}" class="like-btn" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="red" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                        </svg>
+                        {% endif %}
                     </a>
                     <p id="num-likes-{{ i.id }}" class="num-likes"> {{ i.likes.count}} </p>
                 </div>

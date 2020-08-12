@@ -1,10 +1,16 @@
-.form-group {
+#form-group {
     margin: 40px;
     .form-control {
         margin-bottom: 10px;
     }
 }
 
+#edit-form {
+    margin: 40px;
+    .form-control {
+        margin-bottom: 10px;
+    }
+}
 
 // Posts design
 .post-container {
@@ -35,9 +41,6 @@
         display: flex;
         .like-btn {
             margin-right: 5px;
-        }
-        .like-btn:hover {
-            fill: red;
         }
     }
 
