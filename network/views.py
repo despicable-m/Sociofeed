@@ -147,7 +147,6 @@ def following(request):
 def edit(request, id):
     if request.method == "POST":
         data = json.loads(request.body)
-        print(data)
         the_id = data['id']
         post = data['post']
 
