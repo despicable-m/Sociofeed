@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'project4.urls'
+ROOT_URLCONF = 'sociofeed.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project4.wsgi.application'
+WSGI_APPLICATION = 'sociofeed.wsgi.application'
 
 
 # Database
